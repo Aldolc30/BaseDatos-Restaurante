@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2733d57b-22f1-441e-82d9-c34d91d38df2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="154"/>
+	<queryString>
+		<![CDATA[SELECT
+	EXTRACT(YEAR FROM F.FECHA_FACTURA)AS FECHA,
+	PL.NOMB_PLATO,
+	SUM(DF.CANTIDAD_DETALLE)
+FROM FACTURA F
+	INNER JOIN DETALLE_FACTURA DF ON F.ID_FACTURA = DF.ID_FACTURA
+	INNER JOIN PLATO PL ON DF.ID_PLATO = PL.ID_PLATO
+WHERE F.ID_FACTURA = DF.ID_FACTURA
+AND F.FECHA_FACTURA BETWEEN '2021-01-01' AND '2021-12-31'
+GROUP BY
+	EXTRACT(YEAR FROM F.FECHA_FACTURA),
+	PL.NOMB_PLATO
+ORDER BY SUM(DF.CANTIDAD_DETALLE) DESC]]>
+	</queryString>
+	<field name="fecha" class="java.lang.Double"/>
+	<field name="nomb_plato" class="java.lang.String"/>
+	<field name="sum" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="260" y="17" width="272" height="52" uuid="296874d7-b984-474a-8328-ed0488001aed"/>
+				<textElement textAlignment="Center">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Reporte de platos más vendidos]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement x="160" y="2" width="100" height="20" uuid="294aa8ad-eb21-4d9d-bc94-ec56d83b8455"/>
+				<text><![CDATA[fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="2" width="100" height="20" uuid="add8c0e7-9185-42b6-ae7f-a3346f913a0b"/>
+				<text><![CDATA[nomb_plato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="567" y="2" width="100" height="20" uuid="c0c3096b-70e4-4fe9-b247-3407bed7e7ce"/>
+				<text><![CDATA[sum]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<textField>
+				<reportElement x="160" y="4" width="100" height="20" uuid="f7cc8f18-9def-42d0-a01f-488db3d48cbf"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="358" y="4" width="100" height="20" uuid="01f34c5c-a9df-40b5-9214-7b2c7776d1d2"/>
+				<textFieldExpression><![CDATA[$F{nomb_plato}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="567" y="4" width="100" height="20" uuid="b38b9d4a-b45e-40e7-a4e3-8ff8a2df3de2"/>
+				<textFieldExpression><![CDATA[$F{sum}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="232" splitType="Stretch">
+			<barChart>
+				<chart>
+					<reportElement x="0" y="22" width="802" height="193" uuid="7a92ba95-325c-42b0-841f-a6aa0ceeba15"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Platos más vendidos"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{nomb_plato}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{sum}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
